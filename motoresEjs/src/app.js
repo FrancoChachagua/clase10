@@ -1,6 +1,5 @@
 import express from 'express';
 import cors from 'cors';
-import {engine} from 'express-handlebars';
 import upload from './services/upload.js';
 import Contenedor from './classes/Contenedor.js';
 import path from 'path';
@@ -18,7 +17,7 @@ const contenedor = new Contenedor();
 app.use(express.json());
 app.use(express.urlencoded({extended:true}))
 app.use(cors());
-app.use( express.static(__dirname+'/public'));
+app.use(express.static(__dirname+'/public'));
 app.use((req,res,next)=>{
     let timestamp = Date.now();
     let time = new Date(timestamp);
@@ -26,23 +25,28 @@ app.use((req,res,next)=>{
     next();
 })
 //definir motor de plantilla
-app.engine('handlebars', engine());
 app.set('views', './views');
-app.set('view engine','handlebars')
+app.set('view engine','ejs')
+
+
+app.get('/hello', (req,res)=>{
+    let renderObject ={
+        nombre:"Coders"
+    }
+    res.render('hello', renderObject)
+})
 
 // GET
 app.get('/productos', (req,res)=>{
     contenedor.getAll().then(result=>{
         let info = result.products;
         if(info === `Data esta vacio! Primero debes ingresar un pedido!`|| undefined){
-            res.render('products',{
-                noObject: true
-            });
+            let dontObject=1
+            res.render('productos',{preparedObject:dontObject});
+            console.log(dontObject);
         }else{
-            let preparedObject = {
-                            products : info
-                        }
-            res.render('products', preparedObject);
+            res.render('productos', {preparedObject:info});
+            console.log(info);
         }
     })
 })

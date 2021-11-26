@@ -1,0 +1,25 @@
+<table class="table table-dark mt-4">
+    <thead>
+        <tr>
+            <th></th>
+            <th>Nombre</th>
+            <th>Precio</th>
+            <th>Foto</th>
+        </tr>
+    </thead>
+    <div>
+        <% preparedObject.forEach(function(products){ %>
+            <tbody>
+                <tr>
+                    <th></th>
+                    <td><%= products.title %></td>
+                    <td>$ <%= products.price %></td>
+                    <td>
+                        <img  class="rounded" width="70" heigth="50" src=<%= products.thumbnail %> >
+                    </td>
+                </tr>
+            </tbody>
+        <% }) %>
+    </div>
+    
+</table>
